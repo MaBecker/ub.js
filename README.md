@@ -38,8 +38,8 @@ If you’re using MongoDB you’ll need to create a collection (with any name) a
 
 ## Usage
 
-Normal mode: "/path_to_ub/ub.js"
-App mode: "/path_to_ub/ub.js ./apps/app_directory/"
+Normal mode: "/path_to_ub/hub.js"
+App mode: "/path_to_ub/hub.js ./apps/app_directory/"
 
 Note: some features require "sudo" or elevated privileges.
 
