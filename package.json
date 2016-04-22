@@ -1,18 +1,18 @@
 {
   "name": "ub.js",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ub.js is an open and free Web of Things system",
   "main": "hub.js",
   "keywords": [
-      "web of things",
-      "wot",
-      "internet of things",
-      "iot",
-      "hub"
+    "web of things",
+    "wot",
+    "internet of things",
+    "iot",
+    "hub"
   ],
   "author": "Alex Owen <contact@ubqt.io>",
-  "license" : "SEE LICENSE IN README.md",
-  "url" : "http://ubqt.io/",
+  "license": "SEE LICENSE IN README.md",
+  "url": "http://ubqt.io/",
   "repository": {
     "type": "git",
     "url": "https://github.com/ub-js/ub.js"
