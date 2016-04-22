@@ -30,10 +30,6 @@ Follow the guide here for your OS: https://docs.mongodb.org/manual/administratio
 - Run "git clone https://github.com/ub-js/ub.js.git" in terminal or command prompt
 - Navigate to the directory you saved ub to and run "npm install" in terminal or command prompt
 
-### Installing Bunyan for logging
-
-Bunyan is a logging helper and used by ub to format its output. Installation isn’t necessary, but to correctly format the output you may want to install Bunyan globally using "npm install -g bunyan".
-
 ## Initial setup
 
 Copy the *config.example.json* to *config.json*. This contains all the plugins that the Hub will load, see the full documentation for more details.
@@ -42,8 +38,8 @@ If you’re using MongoDB you’ll need to create a collection (with any name) a
 
 ## Usage
 
-Normal mode: "/path_to_ub/ub.js | bunyan -o short"
-App mode: "/path_to_ub/ub.js ./apps/app_directory/ | bunyan -o short"
+Normal mode: "/path_to_ub/ub.js"
+App mode: "/path_to_ub/ub.js ./apps/app_directory/"
 
 Note: some features require "sudo" or elevated privileges.
 
