@@ -1,6 +1,6 @@
 {
   "name": "ub.js",
-  "version": "0.1.4",
+  "version": "0.1.0",
   "description": "ub.js is an open and free Web of Things system",
   "main": "hub.js",
   "keywords": [
