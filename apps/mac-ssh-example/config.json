@@ -1,0 +1,107 @@
+{
+	"hub": {
+		"id": "hub",
+		"contextID": "my_context",
+		"contextClass": "room other_context"
+	},
+
+	"logLevel": "debug",
+
+	"modules": {
+		"webui": {
+			"file": "./webui.js",
+            "config": {
+				"id": "webui",
+		        "port": 3000,
+		        "root": "./webui",
+                "authentication": {
+                    "storage": "database",
+                    "connection": {
+                        "host": "localhost",
+        	        	"port": 27017,
+        	        	"database_name": "ub"
+                    }
+                }
+			}
+		},
+
+		"websocket": {
+			"file": "./websocket.js",
+			"params": {
+				"server": "webui"
+			},
+			"config": {
+				"id": "websocket",
+		        "updateHandler": "ws"
+			}
+		},
+
+        "mac_ssh": {
+            "file": "./mac_ssh.js",
+            "config": {
+                "id": "mac_ssh",
+                "updateHandler": "mac_ssh",
+                "devices": [
+                    {
+                        "id": "imac_g4",
+                        "class": "apple mac imac desktop media music",
+                        "host": "localhost",
+                        "username": "alex",
+                        "privateKey": "/Users/Alex/.ssh/id_rsa"
+                    }
+                ]
+            }
+        }
+	},
+
+	"cssProperties": [
+        "color",
+    	"opacity",
+    	"brightness",
+    	"background",
+    	"image",
+    	"pattern",
+    	"font",
+        "fontFamily",
+        "fontWeight",
+        "fontSize",
+        "fontStyle",
+    	"height",
+    	"width",
+    	"depth",
+    	"positionX",
+    	"positionY",
+    	"positionZ",
+    	"orientation",
+    	"direction",
+    	"velocity",
+    	"acceleration",
+    	"angularVelocity",
+        "mute",
+    	"volume",
+        "volumeLeft",
+        "volumeRight",
+        "mediaState",
+        "file",
+        "mediaPosition",
+    	"time",
+    	"startTime",
+    	"endTime",
+    	"duration",
+    	"flowRate",
+    	"frequency",
+    	"mass",
+    	"permeability",
+    	"pressure",
+    	"resistance",
+    	"tension",
+    	"ph",
+		"temperature",
+		"humidity",
+		"temperatureMin",
+		"temperatureMax",
+		"humidityMin",
+		"humidityMax",
+		"power"
+	]
+}

@@ -1,0 +1,66 @@
+{
+	"hub": {
+		"id": "hub",
+		"contextID": "my_context",
+		"contextClass": "room other_context"
+	},
+
+	"logLevel": "debug",
+
+	"modules": {
+		"webui": {
+			"file": "./webui.js",
+            "config": {
+				"id": "webui",
+		        "port": 3000,
+		        "root": "./webui",
+                "authentication": {
+                    "storage": "database",
+                    "connection": {
+                        "host": "localhost",
+        	        	"port": 27017,
+        	        	"database_name": "ub"
+                    }
+                }
+			}
+		},
+
+		"websocket": {
+			"file": "./websocket.js",
+			"params": {
+				"server": "webui"
+			},
+			"config": {
+				"id": "websocket",
+		        "updateHandler": "ws"
+			}
+		},
+
+		"serial": {
+			"file": "./serial.js",
+			"config": {
+				"id": "serial",
+		        "speed": 115200,
+		        "refreshInterval": 1000,
+		        "exclusions": [
+		            "/dev/cu.wchusbserial1410",
+		            "/dev/cu.wchusbserial1420",
+                    "/dev/cu.usbmodem1421"
+		        ],
+		        "updateHandler": "serial"
+			}
+		}
+	},
+
+	"cssProperties": [
+        "color",
+		"power",
+		"temperature",
+		"humidity",
+		"temperatureMin",
+		"temperatureMax",
+		"humidityMin",
+		"humidityMax",
+        "volume"
+	]
+}

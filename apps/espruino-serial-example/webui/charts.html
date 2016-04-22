@@ -1,0 +1,84 @@
+<html>
+<head>
+    <title>Environment</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/chart.min.js"></script>
+    <script>
+        $(function() {
+            $.get('/mongodb?field=ch&value=environment', '', function(response) {
+                var data = JSON.parse('{"data":' + response + '}').data;
+                var temperature_01 = [];
+                var humidity_01 = [];
+                var labels_01 = [];
+                var temperature_02 = [];
+                var humidity_02 = [];
+
+                for (var row in data) {
+                    if (data[row].o === 'dht22_01') {
+                        temperature_01.push(data[row].d.temperature);
+                        humidity_01.push(data[row].d.humidity);
+                        labels_01.push(data[row].timestamp);
+                    } else if (data[row].o === 'dht22_02') {
+                        temperature_02.push(data[row].d.temperature);
+                        humidity_02.push(data[row].d.humidity);
+                    }
+                }
+
+                var tempCtx = $("#temp").get(0).getContext("2d");
+                var tempChart = new Chart(tempCtx).Line({
+                    labels: labels_01,
+                    datasets: [{
+                        label: "Temperature: dht22_01",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: temperature_01
+                    }, {
+                        label: "Temperature: dht22_02",
+                        fillColor: "rgba(110,110,110,0.2)",
+                        strokeColor: "rgba(110,110,110,1)",
+                        pointColor: "rgba(110,110,110,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(110,110,110,1)",
+                        data: temperature_02
+                    }]
+                });
+
+                var rhCtx = $("#humidity").get(0).getContext("2d");
+                var rhChart = new Chart(rhCtx).Line({
+                    labels: labels_01,
+                    datasets: [{
+                        label: "Humidity: environmental_monitor_01",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(220,220,220,1)",
+                        pointColor: "rgba(220,220,220,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(220,220,220,1)",
+                        data: humidity_01
+                    }, {
+                        label: "Humidity: dht22_02",
+                        fillColor: "rgba(110,110,110,0.2)",
+                        strokeColor: "rgba(110,110,110,1)",
+                        pointColor: "rgba(110,110,110,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(110,110,110,1)",
+                        data: humidity_02
+                    }]
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <canvas id="temp" width="4000" height="400"></canvas>
+    <canvas id="humidity" width="4000" height="400"></canvas>
+</body>
+
+</html>

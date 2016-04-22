@@ -1,0 +1,9 @@
+{
+    "hubIp": "192.168.0.40",
+    "hubPort": 3000,
+    "device": {
+        "id": "node_01",
+        "class": "node",
+        "clientVersion": "0.1.0"
+    }
+}

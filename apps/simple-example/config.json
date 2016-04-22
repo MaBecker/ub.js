@@ -1,0 +1,39 @@
+{
+	"hub": {
+		"id": "hub",
+		"contextID": "example",
+		"contextClass": "example_class another_example_class i_could_keep_going"
+	},
+
+	"logLevel": "debug",
+
+	"modules": {
+		"simple_plugin": {
+			"file": "./simple_plugin.js",
+            "config": {
+				"id": "simple_plugin",
+                "class": "plugin example"
+			}
+		},
+
+		"simple_virtual_device": {
+			"file": "./simple_virtual_device.js",
+            "config": {
+				"id": "virtual_device",
+                "class": "virtual example"
+			}
+		}
+	},
+
+	"cssProperties": [
+        "color",
+		"power",
+		"temperature",
+		"humidity",
+		"temperatureMin",
+		"temperatureMax",
+		"humidityMin",
+		"humidityMax",
+        "volume"
+	]
+}

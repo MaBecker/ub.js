@@ -1,0 +1,198 @@
+{
+	"hub": {
+		"id": "hub",
+		"contextID": "a_room",
+		"contextClass": "room home anything_else"
+	},
+
+	"logLevel": "debug",
+
+    "_comment": "Remove any modules you don't want to use, add any new ones you make.",
+	"modules": {
+		"webui": {
+			"file": "./webui.js",
+			"config": {
+				"id": "webui",
+		        "port": 3000,
+		        "root": "./webui",
+                "_comment": "you only need one of these authentication methods, delete the one you don't want to use, and this comment.",
+                "authentication": {
+                    "storage": "database",
+                    "connection": {
+                        "host": "localhost",
+        	        	"port": 27017,
+        	        	"database_name": "ub"
+                    }
+                }
+			}
+		},
+
+		"websocket": {
+			"file": "./websocket.js",
+			"params": {
+				"server": "webui"
+			},
+			"config": {
+				"id": "websocket",
+		        "updateHandler": "ws"
+			}
+		},
+
+		"serial": {
+			"file": "./serial.js",
+			"config": {
+				"id": "serial",
+		        "speed": 115200,
+		        "refreshInterval": 1000,
+                "_comment": "You'll need to remove/add exclusions",
+		        "exclusions": [
+		            "/dev/cu.SLAB_USBtoUART",
+		            "/dev/cu.wchusbserial1410",
+		            "/dev/cu.wchusbserial1420"
+		        ],
+		        "updateHandler": "serial"
+			}
+		},
+
+		"socket": {
+			"file": "./socket.js",
+			"config": {
+				"id": "socket",
+		    	"port": 3001,
+		        "updateHandler": "socket",
+                "_comment": "If your message will contain & characters, then change this to anything you like.",
+		        "terminator": "&"
+			}
+		},
+
+		"wifi": {
+			"file": "./wifi.js",
+			"config": {
+				"id": "network",
+		        "updateHandler": "http"
+			}
+		},
+
+		"router": {
+			"file": "./router.js",
+			"config": {
+				"id": "router",
+	        	"updateHandler": "route"
+			}
+		},
+
+		"database": {
+			"file": "./mongodb.js",
+			"config": {
+				"id": "database",
+	        	"updateHandler": "node",
+	        	"host": "localhost",
+	        	"port": 27017,
+	        	"database_name": "ub"
+			}
+		},
+
+        "virtual_device_manager": {
+            "file": "./virtual_devices.js",
+            "config": {
+                "id": "virtual_device_manager",
+                "update_handler": "virtual"
+            }
+        },
+
+        "plug_sockets": {
+            "_comment": "This plugin requires an Arduino (or other client) to receive the message and transmit to the plug sockets.",
+            "file": "./plug_sockets",
+            "config": {
+                "id": "plug_sockets",
+                "updateHandler": "plug_socket",
+                "port": "/dev/tty.wchusbserial1410",
+                "speed": 9600,
+                "devices": [
+                    {
+                        "id": "heater_01",
+                        "class": "mains_socket heater fan_heater 2kw",
+                        "channel": 1,
+                        "subChannel": 1
+                    },
+                    {
+                        "id": "heater_02",
+                        "class": "mains_socket heater convection_heater 3kw",
+                        "channel": 1,
+                        "subChannel": 2
+                    },
+                    {
+                        "id": "dehumidifier_01",
+                        "class": "mains_socket dehumidifier 250w",
+                        "channel": 1,
+                        "subChannel": 3
+                    },
+                    {
+                        "id": "speaker_01",
+                        "class": "mains_socket speaker left",
+                        "channel": 1,
+                        "subChannel": 4
+                    },
+                    {
+                        "id": "speaker_02",
+                        "class": "mains_socket speaker right",
+                        "channel": 2,
+                        "subChannel": 1
+                    }
+                ]
+            }
+        }
+	},
+
+	"cssProperties": [
+        "color",
+    	"opacity",
+    	"brightness",
+    	"background",
+    	"image",
+    	"pattern",
+    	"font",
+        "fontFamily",
+        "fontWeight",
+        "fontSize",
+        "fontStyle",
+    	"height",
+    	"width",
+    	"depth",
+    	"positionX",
+    	"positionY",
+    	"positionZ",
+    	"orientation",
+    	"direction",
+    	"velocity",
+    	"acceleration",
+    	"angularVelocity",
+        "mute",
+    	"volume",
+        "volumeLeft",
+        "volumeRight",
+        "mediaState",
+        "file",
+        "mediaPosition",
+    	"time",
+    	"startTime",
+    	"endTime",
+    	"duration",
+    	"flowRate",
+    	"frequency",
+    	"mass",
+    	"permeability",
+    	"pressure",
+    	"resistance",
+    	"tension",
+    	"ph",
+		"temperature",
+		"humidity",
+		"temperatureMin",
+		"temperatureMax",
+		"humidityMin",
+		"humidityMax",
+		"power",
+        "content"
+	]
+}

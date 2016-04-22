@@ -1,0 +1,15 @@
+{
+  "name": "ub-js-node-client",
+  "version": "0.1.0",
+  "description": "",
+  "main": "v1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io-client": "^1.4.5",
+    "wifi-control": "^1.0.1"
+  }
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Room!</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/socket-io.js"></script>
+    <script src="./js/ub.js"></script>
+    <script src="./js/slider.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/slider.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script>
+        $(function() {
+            var macId = 'imac_g4';
+
+            ub();
+
+            $('#volume_slider').slider(0, 100, 1);
+
+            $('#volume_slider').on('new_slider_value', function(e, sliderNumber, value) {
+                ub('#' + macId).css('volume', value + '%');
+            });
+
+            $('#mute').on('click', function() {
+                ub('#' + macId).css('volume', '0').then(function() {
+                    // could do something here...
+                });
+            });
+
+            $('#play').on('click', function() {
+                ub('#' + macId).action('media.play');
+            });
+
+            $('#pause').on('click', function() {
+                ub('#' + macId).action('media.pause');
+            });
+
+            $('#next').on('click', function() {
+                ub('#' + macId).action('media.next');
+            });
+
+            $('#prev').on('click', function() {
+                ub('#' + macId).action('media.prev');
+            });
+
+            $(document).on('ub:connect', function() {
+                // could do something here...
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <section>
+        <h2>Mac Remote</h2>
+        <div class="slider" id="volume_slider">
+            <span class="slider_section"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section"></span>
+        </div>
+        <div class="button">
+            <button id="mute">Mute</button>
+        </div>
+        <div class="button small_button">
+            <button id="prev"><i class="fa fa-backward"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="play"><i class="fa fa-play"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="pause"><i class="fa fa-pause"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="next"><i class="fa fa-forward"></i></button>
+        </div>
+    </section>
+</body>
+</html>
