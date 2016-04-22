@@ -2,6 +2,8 @@
 
 ub.js is a free and open Web of Things platform for controlling lights, computers, sensors, heaters, toasters and all manner of connected devices. It uses CSS, JavaScript and jQuery, making it simple and accessible to Web developers (or any developers). ub allows for one-to-one and one-to-many messaging using syntax you’re already familiar with.
 
+Full documentation is available [here](https://ub-js.github.io/).
+
 ## Installation
 
 ### Supported platforms
@@ -19,7 +21,7 @@ ub.js is a free and open Web of Things platform for controlling lights, computer
 
 ### (Optionally) install MongoDB
 
-Follow the guide here for your OS: https://docs.mongodb.org/manual/administration/install-community/
+Follow the guide [here](https://docs.mongodb.org/manual/administration/install-community/) for your OS
 
 ### Installing ub from npm
 
