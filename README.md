@@ -1,3 +1,5 @@
+The "mac" branch is broken and not suitable for use.
+
 # ub.js
 
 ub.js is a free and open Web of Things platform for controlling lights, computers, sensors, heaters, toasters and all manner of connected devices. It uses CSS, JavaScript and jQuery, making it simple and accessible to Web developers (or any developers). ub allows for one-to-one and one-to-many messaging using syntax you’re already familiar with.
