@@ -23,14 +23,6 @@
         	        	"port": 27017,
         	        	"database_name": "ub"
                     }
-                },
-                "authentication": {
-                    "storage": "memory",
-                    "users": [{
-                        "id": "1",
-                        "username": "alex",
-                        "password": "password"
-                    }]
                 }
 			}
 		},
