@@ -308,6 +308,12 @@ exports.init = config => {
             // mobile site here
         });
 
+    app.get('/home',
+        ensureLoggedIn('/login'),
+        function(req, res) {
+            res.render('home');
+        });
+
     app.get('/login',
         function(req, res) {
             res.render('login');

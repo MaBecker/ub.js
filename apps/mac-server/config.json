@@ -1,0 +1,51 @@
+{
+    "hub": {
+        "id": "hub",
+        "contextID": "mac",
+        "contextClass": "desk"
+    },
+
+    "logLevel": "debug",
+
+    "modules": {
+        "webui": {
+            "file": "./webui.js",
+            "config": {
+                "id": "webui",
+                "port": 8080,
+                "root": "./webui",
+                "authentication": {
+                    "storage": "database",
+                    "connection": {
+                        "host": "localhost",
+                        "port": 27017,
+                        "database_name": "ub"
+                    }
+                }
+            }
+        },
+
+        "websocket": {
+            "file": "./websocket.js",
+            "params": {
+                "server": "webui"
+            },
+            "config": {
+                "id": "websocket",
+                "updateHandler": "ws"
+            }
+        }
+    },
+
+    "cssProperties": [
+        "color",
+        "power",
+        "temperature",
+        "humidity",
+        "temperatureMin",
+        "temperatureMax",
+        "humidityMin",
+        "humidityMax",
+        "volume"
+    ]
+}
