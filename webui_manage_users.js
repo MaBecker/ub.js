@@ -23,8 +23,8 @@ try {
     console.log(e);
 }
 
-let config = configFile.modules.webui.config;
-url = `mongodb://${config.authentication.connection.host}:${config.authentication.connection.port}/${config.authentication.connection.database_name}`;
+let config = configFile.modules.webui.authentication.connection;
+url = `mongodb://${config.host}:${config.port}/${config.database_name}`;
 
 dbClient.connect(url, (err, database) => {
     if (!err) {
