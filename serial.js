@@ -50,7 +50,7 @@ exports.init = config => {
 	 *	When a new serial device is found, run some code.
 	 */
 	serial_bus.on('new_serial_port', port_name => {
-		let port = new serialPort.SerialPort(port_name, {'baudrate': config.speed}, false);
+		let port = new serialPort(port_name, {'baudrate': config.speed, 'autoOpen': false});
 		known_ports[port_name] = port;
 		log.debug(`Serial: New serial port: ${port_name}`);
 	    known_ports[port_name].once('open', () => {

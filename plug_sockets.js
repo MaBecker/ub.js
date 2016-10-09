@@ -29,8 +29,7 @@ exports.init = config => {
     });
 
     let serialPort = require('serialport');
-    let SerialPort = serialPort.SerialPort;
-    let port = new SerialPort(config.port, {'baudrate': config.speed}, false);
+    let port = new serialPort(config.port, {'baudrate': config.speed, 'autoOpen': false});
     port.open(error => {
         if (error) {
             log.error(`Plug Sockets: error opening port: ${config.port}`);
