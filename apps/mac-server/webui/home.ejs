@@ -44,6 +44,10 @@
                 ub('#' + macId).action('media.prev');
             });
 
+            $('#red').on('click', function() {
+                ub('.led').css('color', '#FF0000');
+            });
+
             $(document).on('ub:connect', function() {
                 // could do something here...
             });
@@ -75,6 +79,9 @@
         </div>
         <div class="button small_button">
             <button id="next"><i class="fa fa-forward"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="red">Red</button>
         </div>
     </section>
 </body>
