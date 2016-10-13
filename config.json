@@ -105,7 +105,7 @@
             "config": {
                 "id": "plug_sockets",
                 "updateHandler": "plug_socket",
-                "port": "/dev/tty.wchusbserial1410",
+                "port": "/dev/ttyUSB0",
                 "speed": 9600,
                 "devices": [
                     {

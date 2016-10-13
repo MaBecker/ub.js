@@ -34,7 +34,7 @@ exports.init = config => {
     });
 
     // Thermostat Example
-    /*
+
     class Thermostat {
         constructor(minTemp, maxTemp) {
             this._temperatureMin = Number(minTemp);
@@ -150,11 +150,11 @@ exports.init = config => {
     };
 
     createThermostat('thermostat', undefined, 'environment', 'virtual.thermostat');
-    */
+
 
     // Humidity Controller example
 
-    /*
+
     class HumidityController {
         constructor(minRH, maxRH) {
             this._humidityMin = Number(minRH);
@@ -274,5 +274,5 @@ exports.init = config => {
     };
 
     createHumidityController('humidity_controller', undefined, 'environment', 'virtual.humidity_controller');
-    */
+    
 };
