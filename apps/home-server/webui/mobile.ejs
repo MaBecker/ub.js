@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Room!</title>
+    <script src="./js/ub.js"></script>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/socket-io.js"></script>
+    <script src="./js/slider.js"></script>
+    <script src="./js/switch.js"></script>
+    <link rel="stylesheet" href="./css/slider.css" />
+    <link rel="stylesheet" href="./css/switch.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        body {
+            background-color: #111;
+            padding: 0;
+            margin: 0;
+        }
+
+        button {
+            background-color: #F0F0F0;
+            border: 1px solid #CCC;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 7px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .button {
+            float: left;
+            padding: 15px;
+            width: 50%;
+        }
+
+        .small_button {
+            width: 25%;
+        }
+
+        section {
+            float: left;
+            width: 100%;
+        }
+
+        section.half_width {
+            width: 50%;
+        }
+
+        h2 {
+            background-color: #C00000;
+            color: #FFF;
+            font-size: 16px;
+            margin: 0;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+        #environment_data div {
+            background-color: #F0F0F0;
+            font-size: 14px;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+        }
+
+    </style>
+    <script>
+        $(function() {
+            ub();
+
+            $('#temperature_slider').slider(13, 25, 0.1);
+
+            $('#temperature_slider').on('new_slider_value', function(e, sliderNumber, value) {
+                if (sliderNumber === 0) {
+                    ub('#thermostat').css('temperatureMin', value + 'c').then(updateMinTemp);
+                } else if (sliderNumber === 1) {
+                    ub('#thermostat').css('temperatureMax', value + 'c').then(updateMaxTemp);
+                }
+            });
+
+            $('#humidity_slider').slider(40, 70, 1);
+
+            $('#humidity_slider').on('new_slider_value', function(e, sliderNumber, value) {
+                if (sliderNumber === 0) {
+                    ub('#humidity_controller').css('humidityMin', value + '%').then(updateMinHumidity);
+                } else if (sliderNumber === 1) {
+                    ub('#humidity_controller').css('humidityMax', value + '%').then(updateMaxHumidity);
+                }
+            });
+
+            $('.on').on('click', function() {
+                ub($(this).attr('data-selector')).css('power','on').then(updateSwitches);
+            });
+
+            $('.off').on('click', function() {
+                ub($(this).attr('data-selector')).css('power','off').then(updateSwitches);
+            });
+
+            $('.switch').on('new_switch_value', function(e, value) {
+                if (value === 'on') {
+                    ub($(this).attr('data-selector')).css('power','on');
+                } else if (value === 'off') {
+                    ub($(this).attr('data-selector')).css('power','off');
+                }
+            });
+
+            var updateMinTemp = function() {
+                ub('#thermostat').css('temperatureMin').then(function(temp) {
+                    $('#temperature_slider').trigger('set_handle', [0, temp.replace('c', '')]);
+                });
+            };
+
+            var updateMaxTemp = function() {
+                ub('#thermostat').css('temperatureMax').then(function(temp) {
+                    $('#temperature_slider').trigger('set_handle', [1, temp.replace('c', '')]);
+                });
+            };
+
+            var updateMinHumidity = function() {
+                ub('#humidity_controller').css('humidityMin').then(function(humidity) {
+                    $('#humidity_slider').trigger('set_handle', [0, humidity.replace('%', '')]);
+                });
+            };
+
+            var updateMaxHumidity = function() {
+                ub('#humidity_controller').css('humidityMax').then(function(humidity) {
+                    $('#humidity_slider').trigger('set_handle', [1, humidity.replace('%', '')]);
+                });
+            };
+
+            var updateSwitches = function() {
+                $('.switch').each(function() {
+                    var $elem = $(this);
+                    var s = $elem.attr('data-selector');
+                    ub(s).css('power').then(function(state) {
+                        if (typeof state === 'string') {
+                            $elem.trigger('set_switch', state);
+                        }
+                    });
+                });
+            };
+
+            $('#low_temp').on('click', function() {
+                ub('#thermostat').css({temperatureMin:'15c', temperatureMax: '17c'}).then(function() {
+                    updateMinTemp();
+                    updateMaxTemp();
+                });
+            });
+
+            $('#high_temp').on('click', function() {
+                ub('#thermostat').css({temperatureMin:'19c', temperatureMax: '22c'}).then(function() {
+                    updateMinTemp();
+                    updateMaxTemp();
+                });
+            });
+
+            $('#low_rh').on('click', function() {
+                ub('#humidity_controller').css({humidityMin:'50%', humidityMax: '60%'}).then(function() {
+                    updateMinHumidity();
+                    updateMaxHumidity();
+                });
+            });
+
+            $('#high_rh').on('click', function() {
+                ub('#humidity_controller').css({humidityMin:'55%', humidityMax: '65%'}).then(function() {
+                    updateMinHumidity();
+                    updateMaxHumidity();
+                });
+            });
+
+            $('#volume_slider').slider(0, 100, 1);
+
+            $('#volume_slider').on('new_slider_value', function(e, sliderNumber, value) {
+                ub('#mac_g4').css('volume', value + '%');
+            });
+
+            $('#mute').on('click', function() {
+                ub('#mac_g4').css('volume', '0').then(function() {
+
+                });
+            });
+
+            $('#play').on('click', function() {
+                ub('#mac_g4').action('media.play');
+            });
+
+            $('#pause').on('click', function() {
+                ub('#mac_g4').action('media.pause');
+            });
+
+            $('#next').on('click', function() {
+                ub('#mac_g4').action('media.next');
+            });
+
+            $('#prev').on('click', function() {
+                ub('#mac_g4').action('media.prev');
+            });
+
+            $(document).on('ub:connect', function() {
+                ub('#environment').sub();
+                updateMinTemp();
+                updateMaxTemp();
+                updateMinHumidity();
+                updateMaxHumidity();
+                updateSwitches();
+            });
+
+            $(document).on('update', function(e) {
+                var data = {};
+                try {
+                    data = JSON.parse(e.originalEvent.detail);
+                } catch (err) {
+                    console.log(err);
+                }
+                if (data !== undefined && data.dv !== undefined && data.dv.d !== undefined && data.dv.d.temperature !== undefined)
+                    $('#temperature_slider').trigger('set_marker', [0, (data.dv.d.temperature + '').replace('c', '')]);
+                if (data !== undefined && data.dv !== undefined && data.dv.d !== undefined && data.dv.d.humidity !== undefined)
+                    $('#humidity_slider').trigger('set_marker', [0, (data.dv.d.humidity + '').replace('%', '')]);
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <section>
+        <h2>Temperature</h2>
+        <div class="slider" id="temperature_slider">
+            <span class="slider_marker"></span>
+            <span class="marker_number"></span>
+            <span class="slider_section" style="background-color: #666"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section" style="background-color: #eee"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section" style="background-color: #666"></span>
+        </div>
+        <div class="button">
+            <button id="low_temp">15-17&deg;C</button>
+        </div><div class="button">
+            <button id="high_temp">19-22&deg;C</button>
+        </div>
+    </section>
+    <section>
+        <h2>Humidity</h2>
+        <div class="slider" id="humidity_slider">
+            <span class="slider_marker"></span>
+            <span class="marker_number"></span>
+            <span class="slider_section" style="background-color: #666"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section" style="background-color: #eee"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section" style="background-color: #666"></span>
+        </div>
+        <div class="button">
+            <button id="low_rh">50-60%</button>
+        </div><div class="button">
+            <button id="high_rh">55-65%</button>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>All Heaters</h2>
+        <div class="button">
+            <button class="on" data-selector=".heater">On</button>
+        </div><div class="button">
+            <button class="off" data-selector=".heater">Off</button>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>Fan Heater</h2>
+        <div class="switch" data-selector="#heater_01">
+            <input class="switch_toggle" type="checkbox" />
+            <span class="switch_section left"></span>
+            <span class="switch_handle"></span>
+            <span class="switch_section right"></span>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>Wall Heater</h2>
+        <div class="switch" data-selector="#heater_02">
+            <input class="switch_toggle" type="checkbox" />
+            <span class="switch_section left"></span>
+            <span class="switch_handle"></span>
+            <span class="switch_section right"></span>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>Dehumidifier</h2>
+        <div class="switch" data-selector="#dehumidifier">
+            <input class="switch_toggle" type="checkbox" />
+            <span class="switch_section left"></span>
+            <span class="switch_handle"></span>
+            <span class="switch_section right"></span>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>Bedside Lamp</h2>
+        <div class="switch" data-selector="#lamp_01">
+            <input class="switch_toggle" type="checkbox" />
+            <span class="switch_section left"></span>
+            <span class="switch_handle"></span>
+            <span class="switch_section right"></span>
+        </div>
+    </section>
+    <section class="half_width">
+        <h2>All Sockets</h2>
+        <div class="button">
+            <button class="on" data-selector=".mains_socket">On</button>
+        </div><div class="button">
+            <button class="off" data-selector=".mains_socket">Off</button>
+        </div>
+    </section>
+    <section>
+        <h2>Volume</h2>
+        <div class="slider" id="volume_slider">
+            <span class="slider_section"></span>
+            <span class="slider_handle"></span>
+            <span class="handle_number"></span>
+            <span class="slider_section"></span>
+        </div>
+        <div class="button">
+            <button id="mute">Mute</button>
+        </div>
+    </section>
+    <section>
+        <h2>Media</h2>
+        <div class="button small_button">
+            <button id="prev"><i class="fa fa-backward"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="play"><i class="fa fa-play"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="pause"><i class="fa fa-pause"></i></button>
+        </div>
+        <div class="button small_button">
+            <button id="next"><i class="fa fa-forward"></i></button>
+        </div>
+    </section>
+</body>
+</html>

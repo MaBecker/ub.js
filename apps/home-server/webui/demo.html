@@ -1,0 +1,345 @@
+<html>
+<head>
+    <title>Hub</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/socket-io.js"></script>
+    <script src="./js/blackbox.js"></script>
+    <script type="text/javascript" src="./js/jscolor/jscolor.js"></script>
+    <link type="text/css" rel="stylesheet" href="./css/style.css" />
+    <script>
+        $(function() {
+
+            //init
+            bb();
+
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <h1>CSS for Real Things</h1>
+
+        <h2>Colour</h2>
+        <div id="css" class="section">
+            <script>
+                $(function() {
+                    $('.single .send_red').on('click', function() {
+                        bb('#ESP002').css('color','#FF0000');
+                    });
+
+                    $('.single .send_green').on('click', function() {
+                        bb('#ESP002').css('color','#00FF00');
+                    });
+
+                    $('.single .send_blue').on('click', function() {
+                        bb('#ESP002').css('color','#0000FF');
+                    });
+
+                    $('.single .send_orange').on('click', function() {
+                        bb('#ESP002').css('color','#FF6000');
+                    });
+
+                    $('.single .send_black').on('click', function() {
+                        bb('#ESP002').css('color','#000000');
+                    });
+
+                    $('.single_group .send_red').on('click', function() {
+                        bb('.light').css('color','#FF0000');
+                    });
+
+                    $('.single_group .send_green').on('click', function() {
+                        bb('.light').css('color','#00FF00');
+                    });
+
+                    $('.single_group .send_blue').on('click', function() {
+                        bb('.light').css('color','#0000FF');
+                    });
+
+                    $('.single_group .send_orange').on('click', function() {
+                        bb('.light').css('color','#FF6000');
+                    });
+
+                    $('.single_group .send_black').on('click', function() {
+                        bb('.light').css('color','#000000');
+                    });
+
+                    $('.multiple_groups .send_red').on('click', function() {
+                        bb('.light, .web_ui').css('color','#FF0000');
+                    });
+
+                    $('.multiple_groups .send_green').on('click', function() {
+                        bb('.light, .web_ui').css('color','#00FF00');
+                    });
+
+                    $('.multiple_groups .send_blue').on('click', function() {
+                        bb('.light, .web_ui').css('color','#0000FF');
+                    });
+
+                    $('.multiple_groups .send_orange').on('click', function() {
+                        bb('.light, .web_ui').css('color','#FF6000');
+                    });
+
+                    $('.multiple_groups .send_black').on('click', function() {
+                        bb('.light').css('color','#000000');
+                        bb('.web_ui').css('color','#111111');
+                    });
+
+                    var picker = new jscolor.color(document.getElementById('color_chooser1'), {});
+                    var picker = new jscolor.color(document.getElementById('color_chooser2'), {});
+                    var picker = new jscolor.color(document.getElementById('color_chooser3'), {});
+                    picker.fromString('99FF33');
+                    $('.single .send_color').on('click', function() {
+                        bb('#ESP002').css('color','#' + $('#color_chooser1').val());
+                    });
+                    $('.single_group .send_color').on('click', function() {
+                        bb('.light').css('color','#' + $('#color_chooser2').val());
+                    });
+                    $('.multiple_groups .send_color').on('click', function() {
+                        bb('.light, .web_ui').css('color','#' + $('#color_chooser3').val());
+                    });
+
+                    $(document).on('update', function(e) {
+                        var device = JSON.parse(e.originalEvent.detail)['dv'];
+                        if (typeof device !== 'undefined') {
+                            if (typeof device.css !== 'undefined') {
+                                if (typeof device.css.color !== undefined) {
+                                    $('body').css('background', device.css.color);
+                                }
+                            }
+                        }
+                    });
+                });
+            </script>
+
+            <div class="subsection single">
+                <p>Devices can be controlled individually. These buttons change the colour of one light using the CSS:</p>
+
+                <div class="code">
+                    #ESP001 {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;color: $color;<br/>
+                    }
+                </div>
+
+                <p>Where $color is the colour to change to.</p>
+
+                <div class="floating_component">
+                    <button class="send_red">Red</button>
+                    <button class="send_green">Green</button>
+                    <button class="send_blue">Blue</button>
+                    <button class="send_orange">Orange</button>
+                    <button class="send_black">Black</button>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Hex value</span>
+                    <input id="color_chooser1" class="color" value="000000" />
+                </div>
+                <div class="floating_component">
+                    <button class="send_color">Set</button>
+                </div>
+            </div>
+
+            <div class="subsection single_group">
+                <p>Devices can be controlled as a group. These buttons change the colour of all the objects with a class of "light" using the CSS:</p>
+
+                <div class="code">
+                    .lights {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;color: $color;<br/>
+                    }
+                </div>
+
+                <p>Where $color is the colour to change to.</p>
+
+                <div class="floating_component">
+                    <button class="send_red">Red</button>
+                    <button class="send_green">Green</button>
+                    <button class="send_blue">Blue</button>
+                    <button class="send_orange">Orange</button>
+                    <button class="send_black">Black</button>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Hex value</span>
+                    <input id="color_chooser2" class="color" value="000000" />
+                </div>
+                <div class="floating_component">
+                    <button class="send_color">Set</button>
+                </div>
+            </div>
+
+            <div class="subsection multiple_groups">
+                <p>Multiple classes of device can be controlled at the same time. These buttons change the colour of all devices with a class of "light", and this Web page.</p>
+
+                <div class="code">
+                    .lights, .web_ui {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;color: $color;<br/>
+                    }
+                </div>
+
+                <p>Where $color is the colour to change to.</p>
+
+                <div class="floating_component">
+                    <button class="send_red">Red</button>
+                    <button class="send_green">Green</button>
+                    <button class="send_blue">Blue</button>
+                    <button class="send_orange">Orange</button>
+                    <button class="send_black">Black</button>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Hex value</span>
+                    <input id="color_chooser3" class="color" value="000000" />
+                </div>
+                <div class="floating_component">
+                    <button class="send_color">Set</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Content</h2>
+        <div id="content" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_content').on('click', function() {
+                        bb('.lcd').css('content',$('#content_text').val());
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <p>Small amounts of data can also be sent easily. The button below sends the following CSS to any connected screen:</p>
+
+                <div class="code">
+                    .screen {<br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;content: "Hello\nWorld!";<br/>
+                    }
+                </div>
+
+                <div class="floating_component">
+                    <span class="label">Text</span>
+                    <input id="content_text" value="Hello\nWorld!" style="width:400px" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_content">Send</button>
+                </div>
+            </div>
+        </div>
+
+<!--
+        <h2>Power</h2>
+        <div id="power" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_on').on('click', function() {
+                        bb($('#power_selector').val()).dcss('power','1');
+                    });
+
+                    $('#send_off').on('click', function() {
+                        bb($('#power_selector').val()).dcss('power','0');
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="power_selector" value="#DESKLAMP001" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_on">On</button>
+                    <button id="send_off">Off</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Weather</h2>
+        <div id="weather" class="section">
+
+            <script>
+
+                //weather
+
+                $(function() {
+                    setTimeout(function() {
+                        $('#weather #min_temp').on('click', function() {
+                            bb('.weather.three_hourly').getData('min_temp', this);
+                        });
+                        $('#weather #max_temp').on('click', function() {
+                            bb('.weather.three_hourly').getData('max_temp', this);
+                        });
+                        $('#weather #weather_desc').on('click', function() {
+                            bb('.weather.three_hourly').getData('weather_desc', this);
+                        });
+                        $('#weather #min_temp').on('data_returned', function(e) {
+                            $('#weather #min_temp').html(e.originalEvent.detail.params.value);
+                        });
+                        $('#weather #max_temp').on('data_returned', function(e) {
+                            $('#weather #max_temp').html(e.originalEvent.detail.params.value);
+                        });
+                        $('#weather #weather_desc').on('data_returned', function(e) {
+                            $('#weather #weather_desc').html(e.originalEvent.detail.params.value);
+                        });
+                        bb('#weather').subscribe('#weather_next3hours');
+                        $('#weather').on('ab', function(e) {
+                            $('#weather #min_temp').html(Math.round((e.originalEvent.detail.params.value.temp.min - 273.15) * 10) / 10);
+                            $('#weather #max_temp').html(Math.round((e.originalEvent.detail.params.value.temp.max - 273.15) * 10) / 10);
+                            $('#weather #weather_desc').html(e.originalEvent.detail.params.value.weather.desc);
+                        });
+                    }, 1000);
+
+                    $('#weather .push #push_weather_button').click(function() {
+                        bb('#weather_next3hours').publishData('weather', {
+                            'temp': {
+                                'min': parseInt($('#weather #min_temp_push').val()) + 273.15,
+                                'max': parseInt($('#weather #max_temp_push').val()) + 273.15
+                            },
+                            'weather':{
+                                'desc': parseInt($('#weather #weather_type_push').val())
+                            }
+                        });
+                    });
+                });
+
+            </script>
+
+            <div class="subsection pull">
+                <div class="floating_component">
+                    <span class="label">Min Temp</span>
+                    <span id="min_temp" class="data">&nbsp;</span>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Max Temp</span>
+                    <span id="max_temp" class="data">&nbsp;</span>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Weather</span>
+                    <span id="weather_desc" class="data">&nbsp;</span>
+                </div>
+            </div>
+            <div class="subsection push">
+                <div class="floating_component">
+                    <span class="label">Min Temp</span>
+                    <input id="min_temp_push" type="text" value="13" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Max Temp</span>
+                    <input id="max_temp_push" type="text" value="14" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Weather</span>
+                    <select id="weather_type_push">
+                        <option value="300">Rain</option>
+                        <option value="800">Sun</option>
+                        <option value="801">Cloud</option>
+                        <option value="200">Storm</option>
+                        <option value="600">Snow</option>
+                        <option value="700">Fog</option>
+                    </select>
+                </div>
+                <div class="floating_component">
+                    <button id="push_weather_button">Send Weather</button>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</body>
+</html>

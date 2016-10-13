@@ -1,0 +1,57 @@
+.switch * {
+    box-sizing: border-box;
+    display: block;
+    height: 100%;
+    position: absolute;
+}
+
+.switch {
+    height: 40px;
+    margin: 30px auto;
+    position: relative;
+    width: 80px;
+}
+
+.switch_section {
+    background-color: #C00000;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+}
+
+.switch_section.left {
+    background-color: #00C000;
+    transition: width 0.2s;
+    width: 0;
+    z-index: 1;
+}
+
+.switch_toggle:checked ~ .switch_section.left {
+    width: 100%;
+}
+
+.switch_handle {
+    background-color: #eee;
+    border: 1px solid #000;
+    left: 0;
+    transition: left 0.2s;
+    width: 50%;
+    z-index: 10;
+}
+
+.switch_toggle:checked ~ .switch_handle {
+    left: 50%;
+}
+
+.switch_toggle {
+    cursor: pointer;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    width: 50%;
+    z-index: 20;
+}
+
+.switch_toggle:checked {
+    left: 50%;
+}

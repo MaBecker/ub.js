@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hub</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/socket-io.js"></script>
+    <script type="text/javascript" src="./js/jscolor/jscolor.js"></script>
+    <script src="./js/ub.js"></script>
+    <link type="text/css" rel="stylesheet" href="./css/style.css" />
+    <script>
+        $(function() {
+
+            //init
+            ub();
+
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <h2>DCSS</h2>
+        <div id="dcss" class="section">
+            <script>
+
+                //dcss
+                $(function() {
+                    $('#send_red').on('click', function() {
+                        ub($('#dcss_selector').val()).css('color','#FF0000');
+                    });
+
+                    $('#send_green').on('click', function() {
+                        ub($('#dcss_selector').val()).css('color','#00FF00');
+                    });
+
+                    $('#send_blue').on('click', function() {
+                        ub($('#dcss_selector').val()).css('color','#0000FF');
+                    });
+
+                    $('#send_orange').on('click', function() {
+                        ub($('#dcss_selector').val()).css('color','#FF6600');
+                    });
+
+                    $('#send_black').on('click', function() {
+                        ub($('#dcss_selector').val()).css('color','#000000');
+                    });
+
+                    var picker = new jscolor.color(document.getElementById('color_chooser'), {});
+                    picker.fromString('99FF33');
+                    $('#send_color').on('click', function() {
+                        ub($('#dcss_selector_hex').val()).css('color','#' + $('#color_chooser').val());
+                    });
+
+                    $(document).on('update', function(e) {
+                        var device = JSON.parse(e.originalEvent.detail)['dv'];
+                        if (typeof device !== 'undefined') {
+                            if (typeof device.css !== 'undefined') {
+                                if (typeof device.css.color !== undefined) {
+                                    $('body').css('background', device.css.color);
+                                }
+                            }
+                        }
+                    });
+
+                    $('#send_url').on('click', function() {
+                        ub('#DCSS_PARSER').dcssSheet($('#dcss_url').val());
+                    });
+                });
+
+            </script>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="dcss_selector" value=".web_ui, .light" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_red">Red</button>
+                    <button id="send_green">Green</button>
+                    <button id="send_blue">Blue</button>
+                    <button id="send_orange">Orange</button>
+                    <button id="send_black">Black</button>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="dcss_selector_hex" value=".web_ui, .light" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Hex value</span>
+                    <input id="color_chooser" class="color" value="000000" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_color">Set</button>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">URL</span>
+                    <input id="dcss_url" value="./test/style.dcss" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_url">Execute</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Content</h2>
+        <div id="content" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_content').on('click', function() {
+                        ub($('#content_selector').val()).css('content',$('#content_text').val());
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="content_selector" value="#ESP001" />
+                    <input id="content_text" value="hello world" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_content">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Update ID</h2>
+        <div id="update_id" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_id').on('click', function() {
+                        ub($('#id_selector').val()).updateID($('#new_id').val());
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="id_selector" value="#ESP002" />
+                    <input id="new_id" value="test_id" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_id">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Update Class</h2>
+        <div id="update_class" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_class').on('click', function() {
+                        ub($('#class_selector').val()).updateClass($('#new_class').val());
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="class_selector" value="#ESP002" />
+                    <input id="new_class" value="test_class" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_class">Send</button>
+                </div>
+            </div>
+        </div>
+
+
+        <h2>Power Sockets</h2>
+        <div id="power" class="section">
+            <script>
+
+                $(function() {
+                    $('#send_on').on('click', function() {
+                        ub($('#power_selector').val()).css('power','on');
+                    });
+
+                    $('#send_off').on('click', function() {
+                        ub($('#power_selector').val()).css('power','off');
+                    });
+                });
+
+            </script>
+             <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="power_selector" value="#DESKLAMP001" />
+                </div>
+                <div class="floating_component">
+                    <button id="send_on">On</button>
+                    <button id="send_off">Off</button>
+                </div>
+            </div>
+        </div>
+
+        <h2>Device Attributes</h2>
+        <div id="attribute" class="section">
+
+            <script>
+
+                //get/set attribute
+
+                $(function() {
+                    $('#get_attr').on('click', function() {
+                        ub().getData($('#data_out_attr').val(), this);
+                    }).on('data_publish', function(e) {
+                        $('#data_out_value').html(e.originalEvent.detail.params.value);
+                    });
+
+                    $('#set_attr').on('click', function() {
+                        ub($('#data_in_selector').val()).setData($('#data_in_attr').val(), $('#data_in_value').val());
+                    });
+                });
+
+            </script>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="data_in_selector" type="text" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Attribute</span>
+                    <input id="data_in_attr" type="text" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Value</span>
+                    <input id="data_in_value" type="text" />
+                </div>
+                <button id="set_attr">Set Attribute</button>
+            </div>
+            <div class="subsection">
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="data_out_selector" type="text" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Attribute</span>
+                    <input id="data_out_attr" type="text" />
+                </div>
+                <div class="floating_component">
+                    <button id="get_attr">Get Attribute</button>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Value</span>
+                    <span class="data" id="data_out_value">&nbsp;</span>
+                </div>
+            </div>
+        </div>
+        <h2>Pub/Sub</h2>
+        <div id="pubsub" class="section">
+
+            <script>
+
+                //pub/sub
+
+                $(function() {
+                    $('#create_channel').on('click', function() {
+                        ub('').createChannel($('#pubsub_create_channel_id').val(),$('#pubsub_create_channel_class').val());
+                    });
+
+                    $('#destroy_channel').on('click', function() {
+                        ub('').destroyChannel($('#pubsub_destroy_channel_selector').val());
+                    });
+
+                    //TODO: make this better
+                    $('#subscribe').on('click', function() {
+                        ub('#pubsub_spectrum #left').sub($('#pubsub_sub_channel_selector').val());
+                    });
+
+                    $('#unsubscribe').on('click', function() {
+                        ub('#pubsub_spectrum #left').unsub($('#pubsub_unsub_channel_selector').val());
+                    });
+
+                    //TODO: fix this
+                    $('#publish_data').on('click', function() {
+                        //ub($('#pubsub_pub_channel_selector').val()).pub('value', '[' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ',' + Math.floor((Math.random() * 10) + 1) + ']');
+                        ub($('#pubsub_pub_channel_selector').val()).pub($('#pubsub_pub_property').val(),$('#pubsub_pub_value').val());
+                    });
+
+                    $('#pubsub_spectrum #left').on('data_publish', function(e) {
+                        var values = e.originalEvent.detail.params.value.replace('[','').replace(']','').split(',');
+                        for (var i = 0; i < values.length; i++) {
+                            $('#pubsub_spectrum #left' + i).css('background-color',getColor(values[i]/100)).css('height',values[i]*2).css('margin-top',200-values[i]*2);
+                        }
+                    });
+
+                    $('#pubsub_spectrum #right').on('data_publish', function(e) {
+                        var values = e.originalEvent.detail.params.value.replace('[','').replace(']','').split(',');
+                        for (var i = 0; i < values.length; i++) {
+                            $('#pubsub_spectrum #right' + i).css('background-color',getColor(values[i]/100)).css('height',values[i]*2).css('margin-top',200-values[i]*2);
+                        }
+                    });
+
+                    var getColor = function(value){
+                        //value from 0 to 1
+                        var hue=((1-value)*120).toString(10);
+                        return ["hsl(",hue,",100%,50%)"].join("");
+                    }
+                });
+
+            </script>
+
+            <div id="pubsub_controls">
+                <div class="subsection">
+                    <div class="floating_component">
+                        <span class="label">ID</span>
+                        <input id="pubsub_create_channel_id" type="text" value="test_id" />
+                    </div>
+                    <div class="floating_component">
+                        <span class="label">Class</span>
+                        <input id="pubsub_create_channel_class" type="text" value="test_class" />
+                    </div>
+                    <button id="create_channel">Create channel</button>
+                </div>
+                <div class="subsection">
+                    <div class="floating_component">
+                        <span class="label">Selector</span>
+                        <input id="pubsub_destroy_channel_selector" type="text" value="#test_id" />
+                    </div>
+                    <button id="destroy_channel">Destroy channel</button>
+                </div>
+                <div class="subsection">
+                    <div class="floating_component">
+                        <span class="label">Selector</span>
+                        <input id="pubsub_sub_channel_selector" type="text" value="#test_id" />
+                    </div>
+                    <button id="subscribe">Subscribe</button>
+                </div>
+                <div class="subsection">
+                    <div class="floating_component">
+                        <span class="label">Selector</span>
+                        <input id="pubsub_unsub_channel_selector" type="text" value="#test_id" />
+                    </div>
+                    <button id="unsubscribe">Unsubscribe</button>
+                </div>
+                <div class="subsection">
+                    <div class="floating_component">
+                        <span class="label">Selector</span>
+                        <input id="pubsub_pub_channel_selector" type="text" value="#environment" />
+                    </div>
+                    <div class="floating_component">
+                        <span class="label"></span>
+                        <input id="pubsub_pub_property" type="text" value="temperature" />
+                    </div>
+                    <div class="floating_component">
+                        <span class="label">Data</span>
+                        <input id="pubsub_pub_value" type="text" value="14c" />
+                    </div>
+                    <button id="publish_data">Publish data</button>
+                </div>
+                <div id="subscription_data"></div>
+            </div>
+
+            <div id="subsection pubsub_spectrum">
+                <div class="channel" id="left">
+                    <p class="bar" id="left0"></p>
+                    <p class="bar" id="left1"></p>
+                    <p class="bar" id="left2"></p>
+                    <p class="bar" id="left3"></p>
+                    <p class="bar" id="left4"></p>
+                    <p class="bar" id="left5"></p>
+                    <p class="bar" id="left6"></p>
+                </div>
+
+                <div class="channel" id="right">
+                    <p class="bar" id="right0"></p>
+                    <p class="bar" id="right1"></p>
+                    <p class="bar" id="right2"></p>
+                    <p class="bar" id="right3"></p>
+                    <p class="bar" id="right4"></p>
+                    <p class="bar" id="right5"></p>
+                    <p class="bar" id="right6"></p>
+                </div>
+            </div>
+        </div>
+        <h2>Twitter</h2>
+        <div id="tweet_section" class="section">
+
+            <script>
+
+                //tweet
+
+                $(function() {
+                    $('#tweet').on('click', function() {
+                        ub('.twitter').tweet($('#tweet_text').val());
+                    });
+                });
+
+            </script>
+
+            <div class="subsection">
+                <div class="floating_component fullwidth">
+                    <span class="label">Tweet</span>
+                    <textarea id="tweet_text" type="text" placeholder="Text..."></textarea>
+                </div>
+                <button id="tweet">Send tweet</button>
+            </div>
+        </div>
+        <h2>Music</h2>
+        <div id="music" class="section">
+
+            <script>
+
+                //music
+
+                $(function() {
+                    $('#play').on('click', function() {
+                        ub('.spotify').media('play');
+                    });
+
+                    $('#pause').on('click', function() {
+                        ub('.spotify').media('pause');
+                    });
+
+                    $('#resume').on('click', function() {
+                        ub('.spotify').media('resume');
+                    });
+
+                    $('#next').on('click', function() {
+                        ub('.spotify').media('next');
+                    });
+
+                    $('#prev').on('click', function() {
+                        ub('.spotify').media('previous');
+                    });
+                });
+
+            </script>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <button id="play">Play</button>
+                    <button id="pause">Pause</button>
+                    <button id="resume">Resume</button>
+                    <button id="next">Next</button>
+                    <button id="prev">Previous</button>
+                </div>
+            </div>
+        </div>
+        <h2>Weather</h2>
+        <div id="weather" class="section">
+
+            <script>
+
+                //weather
+
+                $(function() {
+                    setTimeout(function() {
+                        $('#weather #min_temp').on('click', function() {
+                            ub('.weather.three_hourly').getData('min_temp', this);
+                        });
+                        $('#weather #max_temp').on('click', function() {
+                            ub('.weather.three_hourly').getData('max_temp', this);
+                        });
+                        $('#weather #weather_desc').on('click', function() {
+                            ub('.weather.three_hourly').getData('weather_desc', this);
+                        });
+                        $('#weather #min_temp').on('data_returned', function(e) {
+                            $('#weather #min_temp').html(e.originalEvent.detail.params.value);
+                        });
+                        $('#weather #max_temp').on('data_returned', function(e) {
+                            $('#weather #max_temp').html(e.originalEvent.detail.params.value);
+                        });
+                        $('#weather #weather_desc').on('data_returned', function(e) {
+                            $('#weather #weather_desc').html(e.originalEvent.detail.params.value);
+                        });
+                        ub('#weather').sub('#weather_next3hours');
+                        $('#weather').on('ab', function(e) {
+                            $('#weather #min_temp').html(Math.round((e.originalEvent.detail.params.value.temp.min - 273.15) * 10) / 10);
+                            $('#weather #max_temp').html(Math.round((e.originalEvent.detail.params.value.temp.max - 273.15) * 10) / 10);
+                            $('#weather #weather_desc').html(e.originalEvent.detail.params.value.weather.desc);
+                        });
+                    }, 1000);
+
+                    $('#weather .push #push_weather_button').click(function() {
+                        ub('#weather_next3hours').pub('weather', {
+                            'temp': {
+                                'min': parseInt($('#weather #min_temp_push').val()) + 273.15,
+                                'max': parseInt($('#weather #max_temp_push').val()) + 273.15
+                            },
+                            'weather':{
+                                'desc': parseInt($('#weather #weather_type_push').val())
+                            }
+                        });
+                    });
+                });
+
+            </script>
+
+            <div class="subsection pull">
+                <div class="floating_component">
+                    <span class="label">Min Temp</span>
+                    <span id="min_temp" class="data">&nbsp;</span>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Max Temp</span>
+                    <span id="max_temp" class="data">&nbsp;</span>
+                </div>
+                <div class="floating_component">
+                    <span class="label">Weather</span>
+                    <span id="weather_desc" class="data">&nbsp;</span>
+                </div>
+            </div>
+            <div class="subsection push">
+                <div class="floating_component">
+                    <span class="label">Min Temp</span>
+                    <input id="min_temp_push" type="text" value="13" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Max Temp</span>
+                    <input id="max_temp_push" type="text" value="14" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Weather</span>
+                    <select id="weather_type_push">
+                        <option value="300">Rain</option>
+                        <option value="800">Sun</option>
+                        <option value="801">Cloud</option>
+                        <option value="200">Storm</option>
+                        <option value="600">Snow</option>
+                        <option value="700">Fog</option>
+                    </select>
+                </div>
+                <div class="floating_component">
+                    <button id="push_weather_button">Send Weather</button>
+                </div>
+            </div>
+        </div>
+        <h2>Internet Status</h2>
+        <div id="internet_status" class="section">
+
+            <script>
+
+                //internet status
+
+                $(function() {
+                    $('#internet_status #status_red').click(function() {
+                        ub('#internet_status').pub('internet_status',{'internet_available': false, 'dns_available': false});
+                    });
+                    $('#internet_status #status_orange').click(function() {
+                        ub('#internet_status').pub('internet_status',{'internet_available': true, 'dns_available': false});
+                    });
+                    $('#internet_status #status_green').click(function() {
+                        ub('#internet_status').pub('internet_status',{'internet_available': true, 'dns_available': true});
+                    });
+                });
+
+            </script>
+
+            <div class="subsection">
+                <div class="floating_component">
+                    <button id="status_red">Net and DNS down</button>
+                </div>
+                <div class="floating_component">
+                    <button id="status_orange">Net up, DNS down</button>
+                </div>
+                <div class="floating_component">
+                    <button id="status_green">Net and DNS up</button>
+                </div>
+            </div>
+        </div>
+        <h2>Debug</h2>
+        <div id="debug" class="section">
+
+            <script>
+
+                //debug
+
+                $(function() {
+                    $('#send_json_button').on('click', function() {
+                        ub('').test($('#debug_event').val(), $('#debug_json').val());
+                    });
+
+                    $('#start_test').on('click', function() {
+                        var toggle = false;
+                        var test = setInterval(function() {
+                            if (toggle) {
+                                ub($('#speed_test_selector').val()).css('color','#FF0000');
+                            } else {
+                                ub($('#speed_test_selector').val()).css('color','#00FF00');
+                            }
+                            toggle = !toggle;
+                        }, $('#speed_test_interval').val());
+
+                        $('#end_test').on('click', function() {
+                            clearInterval(test);
+                        });
+                    });
+                });
+
+            </script>
+
+            <div id="send_json" class="subsection">
+                <h3>Send JSON</h3>
+                <div>
+                    <div class="floating_component">
+                        <span class="label">Action type</span>
+                        <select id="debug_event" >
+                            <option value="request_action">request_action</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="floating_component fullwidth">
+                    <span class="label">JSON</span>
+                    <textarea id="debug_json" type="text"  placeholder="JSON"></textarea>
+                </div>
+                <div class="floating_component">
+                    <button id="send_json_button">Send JSON</button>
+                </div>
+            </div>
+
+            <div id="speed_test" class="subsection">
+                <h3>Speed test</h3>
+                <div class="floating_component">
+                    <span class="label">Selector</span>
+                    <input id="speed_test_selector" type="text" value=".web_ui" />
+                </div>
+                <div class="floating_component">
+                    <span class="label">Interval (ms)</span>
+                    <input id="speed_test_interval" type="text" value="100" />
+                </div>
+                <div class="floating_component">
+                    <button id="start_test">Start speed test</button>
+                    <button id="end_test">End speed test</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>
