@@ -47,7 +47,8 @@
 		        "exclusions": [
 		            "/dev/cu.SLAB_USBtoUART",
 		            "/dev/cu.wchusbserial1410",
-		            "/dev/cu.wchusbserial1420"
+		            "/dev/cu.wchusbserial1420",
+                    "/dev/ttyUSB0"
 		        ],
 		        "updateHandler": "serial"
 			}
