@@ -128,16 +128,10 @@
                         "subChannel": 3
                     },
                     {
-                        "id": "speaker_01",
+                        "id": "lamp_01",
                         "class": "mains_socket speaker left",
                         "channel": 1,
                         "subChannel": 4
-                    },
-                    {
-                        "id": "speaker_02",
-                        "class": "mains_socket speaker right",
-                        "channel": 2,
-                        "subChannel": 1
                     }
                 ]
             }
