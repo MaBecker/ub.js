@@ -86,7 +86,7 @@ exports.init = config => {
                 }, type);
             } else if (temp && temp <= thermostat.temperatureMin) {
                 log.debug(`Thermostat: Turn on heater: ${temp} <= ${thermostat.temperatureMin}`);
-                vHelpers.sendUpdate(id, '.wall_heater', {
+                vHelpers.sendUpdate(id, '.convection_heater', {
                     dv: {
                         css: {
                             power: 'on'
@@ -274,5 +274,5 @@ exports.init = config => {
     };
 
     createHumidityController('humidity_controller', undefined, 'environment', 'virtual.humidity_controller');
-    
+
 };
