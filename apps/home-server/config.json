@@ -122,7 +122,7 @@
                         "subChannel": 2
                     },
                     {
-                        "id": "dehumidifier_01",
+                        "id": "dehumidifier",
                         "class": "mains_socket dehumidifier 250w",
                         "channel": 1,
                         "subChannel": 3
