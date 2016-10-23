@@ -83,7 +83,7 @@ exports.init = config => {
 
             log.debug('Plug Sockets: sending command: ' + command);
             port.write(command + '\n', (err, results) => {
-                if (typeof err !== 'undefined') {
+                if (typeof err !== 'undefined' && err !== 'null') {
                     log.error('Plug Sockets: ' + err);
                 }
                 if (typeof results !== 'undefined') {
