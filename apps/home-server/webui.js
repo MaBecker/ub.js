@@ -244,6 +244,12 @@ exports.init = config => {
             res.render('home');
         });
 
+    app.get('/mobile',
+        ensureLoggedIn('/login'),
+        function(req, res) {
+            res.render('mobile');
+        });
+
     app.get('/login',
         function(req, res) {
             res.render('login');
